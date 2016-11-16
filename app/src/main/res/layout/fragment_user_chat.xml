@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/message_edit_text"
         android:layout_below="@id/chat_user_name_title"
+        android:divider="@null"
         android:dividerHeight="0dp"
         android:paddingBottom="10dp" />
 
