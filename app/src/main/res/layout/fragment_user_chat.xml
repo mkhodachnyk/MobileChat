@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,14 +9,27 @@
         android:id="@+id/chat_user_name_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        tools:text="User Name" />
 
     <EditText
         android:id="@+id/message_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:drawableRight="@drawable/ic_send_black_24dp" />
+        android:drawableEnd="@drawable/ic_send_black_24dp"
+        android:ems="10"
+        android:hint="@string/type_message_hint"
+        android:maxHeight="80dp"
+        tools:text="Some message text" />
+
+    <ListView
+        android:id="@+id/message_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/message_edit_text"
+        android:layout_below="@id/chat_user_name_title"
+        android:dividerHeight="0dp"
+        android:paddingBottom="10dp" />
 
 </RelativeLayout>

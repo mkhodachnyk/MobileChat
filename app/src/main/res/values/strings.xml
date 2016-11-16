@@ -4,4 +4,6 @@
     <string name="information_menu_title">Information</string>
     <string name="settings_menu_title">Settings</string>
     <string name="log_out_menu_title">Log out</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="type_message_hint">Type message here</string>
 </resources>
