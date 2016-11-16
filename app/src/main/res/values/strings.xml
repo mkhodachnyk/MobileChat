@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MobileChat</string>
+    <string name="facebook_app_id">1614827338812890</string>
+    <string name="information_menu_title">Information</string>
+    <string name="settings_menu_title">Settings</string>
+    <string name="log_out_menu_title">Log out</string>
+</resources>
