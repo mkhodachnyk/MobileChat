@@ -1,4 +1,4 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.models;
 
 import java.util.ArrayList;
 import java.util.List;

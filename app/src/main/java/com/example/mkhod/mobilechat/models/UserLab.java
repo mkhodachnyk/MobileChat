@@ -1,4 +1,4 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.models;
 
 import android.content.Context;
 

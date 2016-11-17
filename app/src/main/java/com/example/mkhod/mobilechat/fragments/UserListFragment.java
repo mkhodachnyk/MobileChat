@@ -1,4 +1,4 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.fragments;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -19,22 +18,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mkhod.mobilechat.R;
+import com.example.mkhod.mobilechat.activities.MainActivity;
+import com.example.mkhod.mobilechat.models.ChatUser;
+import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
+import com.example.mkhod.mobilechat.models.UserLab;
 import com.facebook.login.LoginManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by mkhod on 15.11.2016.
  */
 
 public class UserListFragment extends Fragment {
-    public static final String CURRENT_POSITION = "current_position";
     private boolean dualPane;
     ChatUser selectedUser;
 
     private RecyclerView userRecyclerView;
     private UserAdapter adapter;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +62,6 @@ public class UserListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_user_list, container, false);
 
         userRecyclerView = (RecyclerView) view.findViewById(R.id.user_recycler_view);
@@ -64,15 +81,6 @@ public class UserListFragment extends Fragment {
             dualPane = true;
         } else dualPane = false;
     }
-
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            dualPane = true;
-//        } else dualPane = false;
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -136,23 +144,18 @@ public class UserListFragment extends Fragment {
         public void onClick(View v) {
             selectedUser = UserLab.getInstance(getActivity()).getUser(user.getId());
             if (dualPane) {
-                UserChatFragment userChatFragment =
-                        (UserChatFragment) getFragmentManager().findFragmentById(R.id.fragment_container_chat);
-                if (userChatFragment == null) {
-                    userChatFragment = UserChatFragment.newInstance(user.getId());
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .add(R.id.fragment_container_chat, userChatFragment)
-                            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                            .commit();
-                    adapter.notifyDataSetChanged();
-                }
+                UserChatFragment userChatFragment = UserChatFragment.newInstance(user.getId());
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container_chat, userChatFragment)
+                        .commit();
+                adapter.notifyDataSetChanged();
+                //}
             } else {
 
                 UserChatFragment userChatFragment = UserChatFragment.newInstance(user.getId());
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, userChatFragment)
                         .addToBackStack("TAG")
-                        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                         .commit();
                 adapter.notifyDataSetChanged();
             }
@@ -210,5 +213,12 @@ public class UserListFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnMessageSentClickEvent event) {
+        if (event.isClicked()) {
+            updateUI();
+        }
     }
 }

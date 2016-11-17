@@ -1,4 +1,4 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.mkhod.mobilechat.R;
+import com.example.mkhod.mobilechat.adapters.ChatAdapter;
+import com.example.mkhod.mobilechat.models.ChatUser;
+import com.example.mkhod.mobilechat.models.Message;
+import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
+import com.example.mkhod.mobilechat.models.UserLab;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.UUID;
 
@@ -46,7 +55,7 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
                     if (event.getRawX() >= (messageInputEditText.getRight() - messageInputEditText
                             .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         sendMessage(messageInputEditText.getText().toString());
-
+                        EventBus.getDefault().post(new OnMessageSentClickEvent(true));
                         return true;
                     }
                 }

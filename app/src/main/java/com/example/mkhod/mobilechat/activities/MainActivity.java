@@ -1,11 +1,11 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
+import com.example.mkhod.mobilechat.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

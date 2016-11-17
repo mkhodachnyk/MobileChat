@@ -1,9 +1,14 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.mkhod.mobilechat.R;
+import com.example.mkhod.mobilechat.fragments.UserChatFragment;
+import com.example.mkhod.mobilechat.models.UserLab;
+import com.example.mkhod.mobilechat.fragments.UserListFragment;
 
 /**
  * Created by mkhod on 15.11.2016.
@@ -36,16 +41,14 @@ public class UserListActivity extends AppCompatActivity {
                         .commit();
             }
         } else {
-            if (savedInstanceState == null) {
-                UserListFragment userListFragment =
-                        (UserListFragment) fragmentManager.findFragmentById(R.id.fragment_container);
-                if (userListFragment == null) {
-                    userListFragment = new UserListFragment();
-                }
+            UserListFragment userListFragment =
+                    (UserListFragment) fragmentManager.findFragmentById(R.id.fragment_container);
+            if (savedInstanceState == null || userListFragment == null) {
+                userListFragment = new UserListFragment();
                 fragmentManager.beginTransaction()
                         .add(R.id.fragment_container, userListFragment)
                         .commit();
             }
+        }
     }
-}
 }

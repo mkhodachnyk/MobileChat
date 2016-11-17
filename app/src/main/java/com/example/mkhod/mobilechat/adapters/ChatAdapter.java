@@ -1,4 +1,4 @@
-package com.example.mkhod.mobilechat;
+package com.example.mkhod.mobilechat.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.mkhod.mobilechat.models.Message;
+import com.example.mkhod.mobilechat.R;
 
 import java.util.List;
 
