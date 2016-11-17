@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 parameters.putString("fields", "id,name,link,gender");
                 graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
-                loginButton.setVisibility(View.INVISIBLE);
                 finish();
             }
 

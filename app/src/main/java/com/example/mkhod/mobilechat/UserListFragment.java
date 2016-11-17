@@ -1,11 +1,16 @@
 package com.example.mkhod.mobilechat;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +22,16 @@ import android.widget.TextView;
 import com.facebook.login.LoginManager;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by mkhod on 15.11.2016.
  */
 
 public class UserListFragment extends Fragment {
+    public static final String CURRENT_POSITION = "current_position";
+    private boolean dualPane;
+    ChatUser selectedUser;
 
     private RecyclerView userRecyclerView;
     private UserAdapter adapter;
@@ -42,9 +51,28 @@ public class UserListFragment extends Fragment {
         userRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
+        setUpFragmentStackListener();
 
         return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            dualPane = true;
+        } else dualPane = false;
+    }
+
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            dualPane = true;
+//        } else dualPane = false;
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -64,6 +92,7 @@ public class UserListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("UserListFragment", "onResume()");
         updateUI();
     }
 
@@ -92,7 +121,6 @@ public class UserListFragment extends Fragment {
 
         private ChatUser user;
 
-
         public UserHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -106,8 +134,28 @@ public class UserListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = UserChatActivity.newIntent(getActivity(), user.getId());
-            startActivity(intent);
+            selectedUser = UserLab.getInstance(getActivity()).getUser(user.getId());
+            if (dualPane) {
+                UserChatFragment userChatFragment =
+                        (UserChatFragment) getFragmentManager().findFragmentById(R.id.fragment_container_chat);
+                if (userChatFragment == null) {
+                    userChatFragment = UserChatFragment.newInstance(user.getId());
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container_chat, userChatFragment)
+                            //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                            .commit();
+                    adapter.notifyDataSetChanged();
+                }
+            } else {
+
+                UserChatFragment userChatFragment = UserChatFragment.newInstance(user.getId());
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, userChatFragment)
+                        .addToBackStack("TAG")
+                        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        .commit();
+                adapter.notifyDataSetChanged();
+            }
         }
 
         public void bindUser(ChatUser user) {
@@ -147,5 +195,20 @@ public class UserListFragment extends Fragment {
         }
     }
 
+    private void setUpFragmentStackListener() {
+        getActivity().getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (null != getActivity() && null != getActivity().getSupportFragmentManager() &&
+                        null != getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container)) {
 
+                    Fragment fragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+                    if (fragment instanceof UserListFragment) {
+                        updateUI();
+                    }
+                }
+            }
+        });
+    }
 }

@@ -21,10 +21,6 @@ public class Message {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public String getText() {
         return text;
     }
@@ -37,7 +33,4 @@ public class Message {
         return myMessage;
     }
 
-    public void setMyMessage(boolean myMessage) {
-        this.myMessage = myMessage;
-    }
 }

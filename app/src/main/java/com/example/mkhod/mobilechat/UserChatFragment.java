@@ -1,7 +1,6 @@
 package com.example.mkhod.mobilechat;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +28,6 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         UUID userId = (UUID) getArguments().getSerializable(ARG_USER_ID);
         user = UserLab.getInstance(getActivity()).getUser(userId);
     }
@@ -48,6 +46,7 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
                     if (event.getRawX() >= (messageInputEditText.getRight() - messageInputEditText
                             .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         sendMessage(messageInputEditText.getText().toString());
+
                         return true;
                     }
                 }
@@ -70,13 +69,6 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private void sendMessage(String text) {
-        Message message = new Message(text, true);
-        user.addMessage(message);
-        messageInputEditText.setText("");
-        chatAdapter.notifyDataSetChanged();
-    }
-
     public static UserChatFragment newInstance(UUID userId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_USER_ID, userId);
@@ -86,5 +78,10 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
         return fragment;
     }
 
-
+    private void sendMessage(String text) {
+        Message message = new Message(text, true);
+        user.addMessage(message);
+        messageInputEditText.setText("");
+        chatAdapter.notifyDataSetChanged();
+    }
 }

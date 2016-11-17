@@ -32,10 +32,6 @@ public class UserLab {
         return null;
     }
 
-    public void addUser(ChatUser user) {
-        users.add(user);
-    }
-
     private UserLab(Context context) {
         users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
