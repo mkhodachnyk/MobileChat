@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,8 +32,7 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
     private ChatUser user;
 
     private EditText messageInputEditText;
-    private TextView userNameTitleTextView;
-    private ListView chatListView;
+    private ImageButton sendButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,34 +41,28 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
         user = UserLab.getInstance(getActivity()).getUser(userId);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_chat, container, false);
 
         messageInputEditText = (EditText) view.findViewById(R.id.message_edit_text);
-        messageInputEditText.setOnTouchListener(new View.OnTouchListener() {
+
+        sendButton = (ImageButton) view.findViewById(R.id.send_button);
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_RIGHT = 2;
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (messageInputEditText.getRight() - messageInputEditText
-                            .getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        sendMessage(messageInputEditText.getText().toString());
-                        EventBus.getDefault().post(new OnMessageSentClickEvent(true));
-                        return true;
-                    }
+            public void onClick(View v) {
+                if (!messageInputEditText.getText().toString().equals("") && !(messageInputEditText.getText() == null)) {
+                    sendMessage(messageInputEditText.getText().toString());
+                    EventBus.getDefault().post(new OnMessageSentClickEvent(true));
                 }
-                return false;
             }
-
         });
 
-
-        userNameTitleTextView = (TextView) view.findViewById(R.id.chat_user_name_title);
+        TextView userNameTitleTextView = (TextView) view.findViewById(R.id.chat_user_name_title);
         userNameTitleTextView.setText(user.getName());
 
-        chatListView = (ListView) view.findViewById(R.id.message_list_view);
+        ListView chatListView = (ListView) view.findViewById(R.id.message_list_view);
         chatListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         chatListView.setStackFromBottom(true);
 

@@ -3,7 +3,6 @@ package com.example.mkhod.mobilechat.fragments;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,7 +73,7 @@ public class UserListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -149,9 +148,7 @@ public class UserListFragment extends Fragment {
                         .replace(R.id.fragment_container_chat, userChatFragment)
                         .commit();
                 adapter.notifyDataSetChanged();
-                //}
             } else {
-
                 UserChatFragment userChatFragment = UserChatFragment.newInstance(user.getId());
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, userChatFragment)
