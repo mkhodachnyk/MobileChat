@@ -21,6 +21,7 @@ import com.example.mkhod.mobilechat.R;
 import com.example.mkhod.mobilechat.activities.MainActivity;
 import com.example.mkhod.mobilechat.models.ChatUser;
 import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
+import com.example.mkhod.mobilechat.models.OnMessageSentEvent;
 import com.example.mkhod.mobilechat.models.UserLab;
 import com.facebook.login.LoginManager;
 
@@ -218,4 +219,12 @@ public class UserListFragment extends Fragment {
             updateUI();
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnMessageSentEvent event) {
+        if (event.isSent()) {
+            updateUI();
+        }
+    }
+
 }

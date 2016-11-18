@@ -1,5 +1,6 @@
 package com.example.mkhod.mobilechat.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -10,14 +11,18 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.mkhod.mobilechat.MyService;
 import com.example.mkhod.mobilechat.R;
 import com.example.mkhod.mobilechat.adapters.ChatAdapter;
 import com.example.mkhod.mobilechat.models.ChatUser;
 import com.example.mkhod.mobilechat.models.Message;
 import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
+import com.example.mkhod.mobilechat.models.OnMessageSentEvent;
 import com.example.mkhod.mobilechat.models.UserLab;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.UUID;
 
@@ -34,6 +39,19 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
     private EditText messageInputEditText;
     private ImageButton sendButton;
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +61,7 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_chat, container, false);
 
         messageInputEditText = (EditText) view.findViewById(R.id.message_edit_text);
@@ -86,5 +104,12 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
         user.addMessage(message);
         messageInputEditText.setText("");
         chatAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OnMessageSentEvent event) {
+        if (event.isSent()) {
+            chatAdapter.notifyDataSetChanged();
+        }
     }
 }
