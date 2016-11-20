@@ -28,8 +28,6 @@
         <activity android:name=".activities.SettingsActivity" />
 
         <service android:name=".MyService" />
-
-        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.mkhod.mobilechat.models.Message;
 import com.example.mkhod.mobilechat.R;
+import com.example.mkhod.mobilechat.models.Message;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
 public class ChatAdapter extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
-    List<Message> messages;
+    private List<Message> messages;
 
     public ChatAdapter(Context context, List<Message> messages) {
         this.messages = messages;
@@ -60,10 +60,10 @@ public class ChatAdapter extends BaseAdapter {
 
         if (message.isMyMessage()) {
             layout.setBackgroundResource(R.drawable.bubble2);
-            parent_layout.setGravity(Gravity.RIGHT);
+            parent_layout.setGravity(Gravity.END);
         } else {
             layout.setBackgroundResource(R.drawable.bubble1);
-            parent_layout.setGravity(Gravity.LEFT);
+            parent_layout.setGravity(Gravity.START);
         }
         messageTextView.setTextColor(Color.BLACK);
 

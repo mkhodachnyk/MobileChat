@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.fragment_container_list, userListFragment)
                             .commit();
                 }
-
                 UserChatFragment userChatFragment =
                         (UserChatFragment) fragmentManager.findFragmentById(R.id.fragment_container_chat);
                 if (userChatFragment == null) {
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                             .commit();
                 }
             } else {
-
                 UserListFragment userListFragment =
                         (UserListFragment) fragmentManager.findFragmentById(R.id.fragment_container_list);
                 if (userListFragment == null) {
@@ -66,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
                             .replace(R.id.fragment_container_list, userListFragment)
                             .commit();
                 }
-
                 UserChatFragment userChatFragment =
                         (UserChatFragment) fragmentManager.findFragmentById(R.id.fragment_container_chat);
                 if (userChatFragment == null) {
-                    userChatFragment = UserChatFragment.newInstance(UserLab.getInstance(this).getUsers().get(0).getId());
+                    userChatFragment =
+                            UserChatFragment.newInstance(UserLab.getInstance(this).getUsers().get(0).getId());
                     fragmentManager.beginTransaction()
                             .replace(R.id.fragment_container_chat, userChatFragment)
                             .commit();

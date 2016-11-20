@@ -21,13 +21,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mkhod.mobilechat.R;
-import com.example.mkhod.mobilechat.activities.LoginActivity;
 import com.example.mkhod.mobilechat.activities.SettingsActivity;
 import com.example.mkhod.mobilechat.models.ChatUser;
 import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
 import com.example.mkhod.mobilechat.models.OnMessageSentEvent;
 import com.example.mkhod.mobilechat.models.UserLab;
-import com.facebook.login.LoginManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +39,7 @@ import java.util.List;
 
 public class UserListFragment extends Fragment {
     private boolean dualPane;
-    ChatUser selectedUser;
+    private ChatUser selectedUser;
 
     private RecyclerView userRecyclerView;
     private UserAdapter adapter;
@@ -81,9 +79,7 @@ public class UserListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            dualPane = true;
-        } else dualPane = false;
+        dualPane = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override

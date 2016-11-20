@@ -4,7 +4,4 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFF</color>
-    <color name="pressed_color">#9e8888</color>
-    <color name="selected_color">#9f8e8e</color>
-    <color name="focused_color">#9b7b7b</color>
 </resources>

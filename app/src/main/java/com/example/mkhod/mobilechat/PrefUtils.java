@@ -15,7 +15,7 @@ public class PrefUtils {
         sPref.edit().putInt("INTERVAL", interval).apply();
     }
 
-    public static int getInerval(Context context) {
+    public static int getInterval(Context context) {
         SharedPreferences sPref = context.getSharedPreferences("MySharedPref", MODE_PRIVATE);
         return sPref.getInt("INTERVAL", 3);
     }

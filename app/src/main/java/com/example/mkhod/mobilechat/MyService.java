@@ -25,14 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 public class MyService extends Service {
 
-    public static final String TAG = "MyService";
-    public static final String SECONDS_INTERVAL_EXTRA = "interval_extra";
+    private static final String TAG = "MyService";
+    private static final String SECONDS_INTERVAL_EXTRA = "interval_extra";
     public static final String EXTRA_MESSAGE_INFO = "extra_message_info";
 
-    NotificationCompat.Builder builder;
-    NotificationManager notificationManager;
+    private NotificationCompat.Builder builder;
+    private NotificationManager notificationManager;
 
-    private int secondsInterval;
     private int i = 0;
 
     @Override
@@ -45,7 +44,7 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand(...)");
-        secondsInterval = intent.getIntExtra(SECONDS_INTERVAL_EXTRA, 3);
+        int secondsInterval = intent.getIntExtra(SECONDS_INTERVAL_EXTRA, 3);
         sendMessages(secondsInterval);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -72,7 +71,7 @@ public class MyService extends Service {
                                 .get(3)
                                 .addMessage(message);
                         EventBus.getDefault().post(new OnMessageSentEvent(true));
-                        TimeUnit.SECONDS.sleep(PrefUtils.getInerval(MyService.this));
+                        TimeUnit.SECONDS.sleep(PrefUtils.getInterval(MyService.this));
 
                         builder = new NotificationCompat.Builder(MyService.this)
                                 .setSmallIcon(R.drawable.ic_sms_black_24dp)
@@ -88,7 +87,8 @@ public class MyService extends Service {
                         stackBuilder.addParentStack(MainActivity.class);
 
                         stackBuilder.addNextIntent(resultIntent);
-                        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent resultPendingIntent =
+                                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                         builder.setContentIntent(resultPendingIntent);
 
                         notificationManager.notify(0, builder.build());

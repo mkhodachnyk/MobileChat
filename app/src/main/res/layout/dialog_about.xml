@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif"
-        android:text="This app is made by Mariana Khodachnyk"
+        android:text="@string/about_text"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 
@@ -24,7 +24,7 @@
         android:layout_below="@+id/tv_about"
         android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif"
-        android:text="Ok"
+        android:text="@string/ok_button_text"
         android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>

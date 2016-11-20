@@ -1,9 +1,7 @@
 package com.example.mkhod.mobilechat.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -11,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.mkhod.mobilechat.MyService;
 import com.example.mkhod.mobilechat.R;
 import com.example.mkhod.mobilechat.adapters.ChatAdapter;
 import com.example.mkhod.mobilechat.models.ChatUser;
@@ -31,13 +28,12 @@ import java.util.UUID;
  */
 public class UserChatFragment extends android.support.v4.app.Fragment {
 
-    public static ChatAdapter chatAdapter;
+    private static ChatAdapter chatAdapter;
 
     private static final String ARG_USER_ID = "user_id";
     private ChatUser user;
 
     private EditText messageInputEditText;
-    private ImageButton sendButton;
 
 
     @Override
@@ -66,11 +62,12 @@ public class UserChatFragment extends android.support.v4.app.Fragment {
 
         messageInputEditText = (EditText) view.findViewById(R.id.message_edit_text);
 
-        sendButton = (ImageButton) view.findViewById(R.id.send_button);
+        ImageButton sendButton = (ImageButton) view.findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!messageInputEditText.getText().toString().equals("") && !(messageInputEditText.getText() == null)) {
+                if (!messageInputEditText.getText().toString().equals("")
+                        && !(messageInputEditText.getText() == null)) {
                     sendMessage(messageInputEditText.getText().toString());
                     EventBus.getDefault().post(new OnMessageSentClickEvent(true));
                 }

@@ -3,7 +3,11 @@
     <string name="facebook_app_id">1614827338812890</string>
     <string name="information_menu_title">Information</string>
     <string name="settings_menu_title">Settings</string>
-    <string name="log_out_menu_title">Log out</string>
-    <string name="hello_world">Hello world!</string>
     <string name="type_message_hint">Type message here</string>
+    <string name="receiving_messages_interval">Receiving messages interval</string>
+    <string name="default_seek_bar_progress_3">3</string>
+    <string name="log_out_button_text">Log out</string>
+    <string name="about_text">This app is made by Mariana Khodachnyk</string>
+    <string name="ok_button_text">OK</string>
+    <string name="send_message_button_description_text">Send message button</string>
 </resources>
