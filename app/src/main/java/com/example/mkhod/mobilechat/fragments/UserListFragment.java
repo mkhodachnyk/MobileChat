@@ -1,5 +1,6 @@
 package com.example.mkhod.mobilechat.fragments;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,10 +16,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mkhod.mobilechat.R;
-import com.example.mkhod.mobilechat.activities.MainActivity;
+import com.example.mkhod.mobilechat.activities.LoginActivity;
+import com.example.mkhod.mobilechat.activities.SettingsActivity;
 import com.example.mkhod.mobilechat.models.ChatUser;
 import com.example.mkhod.mobilechat.models.OnMessageSentClickEvent;
 import com.example.mkhod.mobilechat.models.OnMessageSentEvent;
@@ -84,6 +88,7 @@ public class UserListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_user_list_menu, menu);
     }
@@ -108,17 +113,37 @@ public class UserListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.info_menu_item:
+                createAboutDialog(R.layout.dialog_about);
                 return true;
             case R.id.settings_menu_item:
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             case R.id.logout_menu_item:
                 LoginManager.getInstance().logOut();
                 getActivity().finish();
-                startActivity(new Intent(getContext(), MainActivity.class));
+                startActivity(new Intent(getContext(), LoginActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void createAboutDialog(int dialog_about) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(dialog_about);
+        dialog.setCancelable(false);
+
+        Button dialogOk = (Button) dialog.findViewById(R.id.dialogOk);
+
+        dialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     private class UserHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

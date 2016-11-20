@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.example.mkhod.mobilechat.activities.UserListActivity;
+import com.example.mkhod.mobilechat.activities.MainActivity;
 import com.example.mkhod.mobilechat.models.Message;
 import com.example.mkhod.mobilechat.models.OnMessageSentEvent;
 import com.example.mkhod.mobilechat.models.UserLab;
@@ -72,20 +72,20 @@ public class MyService extends Service {
                                 .get(3)
                                 .addMessage(message);
                         EventBus.getDefault().post(new OnMessageSentEvent(true));
-                        TimeUnit.SECONDS.sleep(interval);
+                        TimeUnit.SECONDS.sleep(PrefUtils.getInerval(MyService.this));
 
                         builder = new NotificationCompat.Builder(MyService.this)
                                 .setSmallIcon(R.drawable.ic_sms_black_24dp)
                                 .setContentTitle("New message")
                                 .setContentText(message.getText());
 
-                        Intent resultIntent = new Intent(MyService.this, UserListActivity.class);
+                        Intent resultIntent = new Intent(MyService.this, MainActivity.class);
 
                         UUID userId = UserLab.getInstance(MyService.this).getUsers().get(3).getId();
                         resultIntent.putExtra(EXTRA_MESSAGE_INFO, userId);
 
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyService.this);
-                        stackBuilder.addParentStack(UserListActivity.class);
+                        stackBuilder.addParentStack(MainActivity.class);
 
                         stackBuilder.addNextIntent(resultIntent);
                         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);

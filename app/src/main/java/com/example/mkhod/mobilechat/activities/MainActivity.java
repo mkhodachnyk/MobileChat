@@ -1,79 +1,107 @@
 package com.example.mkhod.mobilechat.activities;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
+import com.example.mkhod.mobilechat.MyService;
 import com.example.mkhod.mobilechat.R;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
+import com.example.mkhod.mobilechat.fragments.UserChatFragment;
+import com.example.mkhod.mobilechat.fragments.UserListFragment;
+import com.example.mkhod.mobilechat.models.UserLab;
 
-import org.json.JSONObject;
+import java.util.UUID;
+
+/**
+ * Created by mkhod on 15.11.2016.
+ */
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
-    private LoginButton loginButton;
-    private CallbackManager callbackManager;
-    private AccessToken accessToken;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        callbackManager = CallbackManager.Factory.create();
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                accessToken = loginResult.getAccessToken();
-                Log.d(TAG, "onSuccess()" + loginResult.getAccessToken().getUserId());
-                GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken,
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                Intent intent = new Intent(MainActivity.this, UserListActivity.class);
-                                intent.putExtra("EXTRA_USER_NAME", object.optString("name"));
-                                startActivity(intent);
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link,gender");
-                graphRequest.setParameters(parameters);
-                graphRequest.executeAsync();
-                finish();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-
-        accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken != null) {
-            Intent intent = new Intent(MainActivity.this, UserListActivity.class);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(this, MyService.class);
+        //intent.putExtra(MyService.SECONDS_INTERVAL_EXTRA, 3);
+        if (!isMyServiceRunning(MyService.class)) {
+            startService(intent);
         }
 
+        UUID uuid = (UUID) getIntent().getSerializableExtra(MyService.EXTRA_MESSAGE_INFO);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            if (uuid != null) {
+                UserListFragment userListFragment =
+                        (UserListFragment) fragmentManager.findFragmentById(R.id.fragment_container_list);
+                if (userListFragment == null) {
+                    userListFragment = new UserListFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container_list, userListFragment)
+                            .commit();
+                }
+
+                UserChatFragment userChatFragment =
+                        (UserChatFragment) fragmentManager.findFragmentById(R.id.fragment_container_chat);
+                if (userChatFragment == null) {
+                    userChatFragment = UserChatFragment.newInstance(uuid);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container_chat, userChatFragment)
+                            .commit();
+                }
+            } else {
+
+                UserListFragment userListFragment =
+                        (UserListFragment) fragmentManager.findFragmentById(R.id.fragment_container_list);
+                if (userListFragment == null) {
+                    userListFragment = new UserListFragment();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container_list, userListFragment)
+                            .commit();
+                }
+
+                UserChatFragment userChatFragment =
+                        (UserChatFragment) fragmentManager.findFragmentById(R.id.fragment_container_chat);
+                if (userChatFragment == null) {
+                    userChatFragment = UserChatFragment.newInstance(UserLab.getInstance(this).getUsers().get(0).getId());
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container_chat, userChatFragment)
+                            .commit();
+                }
+            }
+        } else {
+            if (uuid != null) {
+                UserChatFragment userChatFragment = UserChatFragment.newInstance(uuid);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, userChatFragment)
+                        .commit();
+            } else {
+                Fragment userListFragment = fragmentManager.findFragmentById(R.id.fragment_container);
+                if (savedInstanceState == null || userListFragment == null) {
+                    userListFragment = new UserListFragment();
+                    fragmentManager.beginTransaction()
+                            .add(R.id.fragment_container, userListFragment)
+                            .commit();
+                }
+            }
+        }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
