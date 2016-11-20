@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="15dp"
-    android:clickable="true">
+    android:clickable="true"
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/tv_about"
@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:fontFamily="sans-serif"
-        android:text="This app Mariana Khodachnyk"
+        android:text="This app is made by Mariana Khodachnyk"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
 

@@ -118,11 +118,6 @@ public class UserListFragment extends Fragment {
             case R.id.settings_menu_item:
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
-            case R.id.logout_menu_item:
-                LoginManager.getInstance().logOut();
-                getActivity().finish();
-                startActivity(new Intent(getContext(), LoginActivity.class));
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

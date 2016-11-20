@@ -13,8 +13,4 @@
         android:title="@string/settings_menu_title"
         app:showAsAction="ifRoom|withText" />
 
-    <item
-        android:id="@+id/logout_menu_item"
-        android:title="@string/log_out_menu_title" />
-
 </menu>

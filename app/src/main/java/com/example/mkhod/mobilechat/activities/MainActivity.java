@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = new Intent(this, MyService.class);
-        //intent.putExtra(MyService.SECONDS_INTERVAL_EXTRA, 3);
         if (!isMyServiceRunning(MyService.class)) {
             startService(intent);
         }

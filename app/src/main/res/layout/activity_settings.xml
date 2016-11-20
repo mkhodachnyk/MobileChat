@@ -3,15 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Receiving messages interval" />
+
     <SeekBar
         android:id="@+id/seconds_interval_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="10" />
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:max="10"
+        android:paddingTop="24dp"
+        android:progress="3" />
 
     <TextView
         android:id="@+id/seconds_intervsl_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seconds_interval_seek_bar"
+        android:layout_centerInParent="true"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="36dp"
+        android:background="@color/colorPrimary"
+        android:text="Log out"
+        android:textColor="@color/white" />
 
 </RelativeLayout>
